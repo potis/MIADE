@@ -1,4 +1,4 @@
-FROM centos
+FROM centos:7
 
 MAINTAINER Panagiotis Korfiatis <korfiatisp@gmail.com>
 
@@ -14,6 +14,7 @@ RUN yum -y install git python-devel
 RUN yum -y  install python-setuptools
 RUN yum -y install gcc-gfortran libmpc-devel
 RUN yum -y install wget
+RUN yum -y install gcc
 RUN yum -y install gcc-c++
 RUN yum -y install Cython
 RUN yum -y install epel-release
@@ -34,8 +35,9 @@ RUN pip install mako
 RUN yum -y install epel-release
 RUN yum -y install nodejs
 RUN yum -y install npm
-RUN npm install -g codebox
-EXPOSE 8000
+
+#RUN npm install -g codebox
+#EXPOSE 8000
 
 RUN mkdir ~/src && cd ~/src && \
   git clone https://github.com/xianyi/OpenBLAS && \
@@ -86,7 +88,7 @@ RUN pip install pydicom
 RUN pip install networkx
 RUN pip install tornado
 RUN pip install nibabel
-RUN pip install nipype
+# RUN pip install nipype
 RUN pip install wget
 RUN pip install Flask
 RUN pip install Flask-Admin
@@ -97,14 +99,23 @@ RUN pip install Flask-WTF
 ENV OPENBLAS_NUM_THREADS=4
 RUN pip install chainer
 RUN pip install theano
-#################################################################################################################
-RUN cd ~/src && \
- git clone https://github.com/stnava/ANTs.git
-RUN cd ~/src && mkdir antsbin
-RUN cd ~/src/antsbin && \
-  cmake ../ANTs -DCMAKE_BUILD_TYPE=Release  -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF && \
-  make -j4
-ENV PATH=~/src/antsbin/bin
-ENTRYPOINT ["/usr/bin/codebox"]
-CMD ["run"]
- 
+RUN pip install keras
+RUN pip install jupyterlab
+RUN jupyter serverextension enable --py jupyterlab
+#####################
+############################################################################################
+#RUN cd ~/src && \
+#git clone https://github.com/stnava/ANTs.git
+#RUN cd ~/src && mkdir antsbin
+#RUN cd ~/src/antsbin && \
+#cmake ../ANTs -DCMAKE_BUILD_TYPE=Release  -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF && \
+# make -j4
+#ENV PATH=~/src/antsbin/bin
+# ENTRYPOINT ["jupyter"]
+RUN cd ~/src
+EXPOSE 8888
+# CMD ["jupyter", "lab"]
+
+ADD notebook.sh /
+
+CMD ["/notebook.sh"]
