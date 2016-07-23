@@ -104,13 +104,13 @@ RUN pip install jupyterlab
 RUN jupyter serverextension enable --py jupyterlab
 #####################
 ############################################################################################
-#RUN cd ~/src && \
-#git clone https://github.com/stnava/ANTs.git
-#RUN cd ~/src && mkdir antsbin
-#RUN cd ~/src/antsbin && \
-#cmake ../ANTs -DCMAKE_BUILD_TYPE=Release  -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF && \
-# make -j4
-#ENV PATH=~/src/antsbin/bin
+RUN cd ~/src && \
+git clone https://github.com/stnava/ANTs.git
+RUN cd ~/src && mkdir antsbin
+RUN cd ~/src/antsbin && \
+cmake ../ANTs -DCMAKE_BUILD_TYPE=Release  -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF && \
+ make -j4
+ENV PATH=~/src/antsbin/bin
 # ENTRYPOINT ["jupyter"]
 RUN cd ~/src
 EXPOSE 8888
