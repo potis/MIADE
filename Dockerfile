@@ -115,7 +115,7 @@ RUN jupyter serverextension enable --py jupyterlab
 RUN cd ~/src
 EXPOSE 8888
 # CMD ["jupyter", "lab"]
-
+RUN mkdir workdirectory
 ADD notebook.sh /
 
 CMD ["/notebook.sh"]
